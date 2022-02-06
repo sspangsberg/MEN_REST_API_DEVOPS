@@ -5,10 +5,10 @@ const Schema = mongoose.Schema;
 let productSchema = new Schema(
 
     {
-        name: {type: String},
-        desciption: {type:String},
-        price: {type: Number},
-        inStock: {type: Boolean}
+        name: {type: String, required: true},
+        desciption: {type:String, required: false},
+        price: {type: Number, required: true},
+        inStock: {type: Boolean, required: true}
     }
     //name: string
     //description: string
