@@ -7,6 +7,7 @@ require("dotenv-flow").config();
 
 // import product routes
 const productRoutes = require("./routes/product");
+const authRoutes = require("./routes/auth");
 
 app.use(express.json());
 //app.use(bodyParser.json());
@@ -16,8 +17,9 @@ app.get("/api/welcome", (req, res) => {
     res.status(200).send({message: "Welcome to the MEN REST API"});
 })
 
+//import routes
 app.use("/api/products", productRoutes);
-
+app.use("/api/user", authRoutes);
 
 
 
