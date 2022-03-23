@@ -1,16 +1,16 @@
 const router = require("express").Router();
 const product = require("../models/product");
+const { verifyToken } = require("../validation");
 
 // CRUD operations
 
 // Create product (post)
-router.post("/", (req, res) => {
+router.post("/", verifyToken, (req, res) => {
     data = req.body;
 
     product.insertMany(data)
         .then(data => { 
-            res.send(data); 
-            console.log(data[0]._id.toString());
+            res.status(201).send(data);            
         })
         .catch(err => {
             res.status(500).send({ message: err.message })
@@ -75,7 +75,7 @@ router.get("/:id", (req, res) => {
 });
 
 // Update specific product (put)
-router.put("/:id", (req, res) => {
+router.put("/:id", verifyToken, (req, res) => {
 
     const id = req.params.id;
     product.findByIdAndUpdate(id, req.body)
@@ -93,8 +93,8 @@ router.put("/:id", (req, res) => {
 });
 
 // Delete specific product (delete)
-router.delete("/:id", (req, res) => {
-x$
+router.delete("/:id", verifyToken, (req, res) => {
+
     const id = req.params.id;
     product.findByIdAndDelete(id)
         .then(data => {
@@ -106,6 +106,7 @@ x$
             }
         })
         .catch(err => {
+            console.debug(err);
             res.status(500).send({ message: "Error deleting product with id=" + id })
         })
 });
