@@ -14,7 +14,7 @@ app.use(express.json());
 
 //routes
 app.get("/api/welcome", (req, res) => {
-    res.status(200).send({message: "Welcome to the MEN REST API"});
+    res.status(200).send({message: "Welcome to the MEN REST API updated"});
 })
 
 //import routes
