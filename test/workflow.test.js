@@ -81,6 +81,7 @@ describe('User workflow tests', () => {
             });
     });
 
+    
     // Valid input test (register, login, )
     it('should register + login a user, create product and delete it from DB', (done) => {
 
@@ -156,6 +157,8 @@ describe('User workflow tests', () => {
                     });
             });
     });
+    
+    
 
     // Invalid input test
     it('should register user with invalid input', (done) => {

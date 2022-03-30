@@ -8,6 +8,10 @@
     "test": "cross-env NODE_ENV=test mocha --exit",
     "test2": "cross-env NODE_ENV=test mocha test/product.test2.js --exit"
   },
+  "engines": {
+    "node": "^16.13.2",
+    "npm": "8.1.2"
+  },
   "keywords": [
     "mongodb",
     "mongoose",
