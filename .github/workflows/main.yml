@@ -29,7 +29,8 @@ jobs:
       - name: NPM install, build and test
         run: |
           npm install
-          npm test
+          npm run 
+          npm test end2end
         env: 
           DBHOST: ${{ secrets.DBHOST }}
           TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
