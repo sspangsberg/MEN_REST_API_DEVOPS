@@ -5,7 +5,6 @@ const NodeCache = require('node-cache');
 // stdTTL is the default time-to-live for each cache entry
 const cache = new NodeCache({ stdTTL: 600 });
 
-
 // CRUD operations
 
 // Create product (post)
