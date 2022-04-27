@@ -1,6 +1,10 @@
 const router = require("express").Router();
 const product = require("../models/product");
 const { verifyToken } = require("../validation");
+const NodeCache = require('node-cache');
+// stdTTL is the default time-to-live for each cache entry
+const cache = new NodeCache({ stdTTL: 600 });
+
 
 // CRUD operations
 
@@ -10,6 +14,7 @@ router.post("/", verifyToken, (req, res) => {
 
     product.insertMany(data)
         .then(data => { 
+            cache.flushAll(); //our cache has invalid data now, so we flush it to force rebuild.
             res.status(201).send(data);            
         })
         .catch(err => {
@@ -18,15 +23,34 @@ router.post("/", verifyToken, (req, res) => {
 });
 
 // Read all products (get)
-router.get("/", (req, res) => {
-    product.find()
-        .then(data => {  
+router.get("/", async (req, res) => {
+    try {
+        // try to retrieve our products in cache
+        let productsCache = cache.get('allProducts');
+
+        // if data does not exist in the cache, retrieve it from the DB
+        if (productsCache == null) {
+            console.log("No cache found. Fetching from DB...");            
+            let data = await product.find();
             
-            res.send(mapArray(data));        
-        })
-        .catch(err => {
-            res.status(500).send({ message: err.message })
-        })
+            // set custom TTL if we need it (otherwise it will default to standard)
+            // time-to-live is set to 300 seconds. After this period
+            // the entry for `allProducts` will be removed from the cache
+            // and the next request will hit the API again
+            const timeToLive = 300;             
+            cache.set('allProducts', data, timeToLive);
+                
+            res.send(mapArray(data));                             
+        }
+        else
+        {          
+            console.log("Cache found :)");
+            res.send(mapArray(productsCache));
+        }
+    }
+    catch (err) {        
+        res.status(500).send({ message: err.message });
+    }   
 });
 
 //Additional routes
